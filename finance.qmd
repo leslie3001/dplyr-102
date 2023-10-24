@@ -1,0 +1,23 @@
+---
+title: "financial data analysis"
+author: "Leslie"
+format: html
+---
+```{r}
+#| message: false
+library(vroom) # or readr
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(here)
+```
+
+## Data loading
+```{r}
+#| message: false
+clients <- vroom(here("data","client.csv"))
+accounts <- vroom(here("data","account.csv"))
+disp <- vroom(here("data","disp.csv"))
+```
+
+
