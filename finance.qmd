@@ -1,5 +1,5 @@
 ---
-title: "financial data analysis"
+title: "Financial data analysis"
 author: "Leslie"
 format: html
 ---
@@ -19,5 +19,35 @@ clients <- vroom(here("data","client.csv"))
 accounts <- vroom(here("data","account.csv"))
 disp <- vroom(here("data","disp.csv"))
 ```
+
+## Joining data
+A collection of joining functions of the form `*_join`. 
+
+### Inner join
+```{r}
+da <- inner_join(accounts, disp)
+```
+join has been done using account_id variable / there's only one column in commom = account_id
+
+```{r}
+cda <- inner_join(clients, da)
+```
+```{r}
+cda <- inner_join(clients, da, by = join_by("client_id"), suffix = c("home", "bank"))
+```
+More options to keep both district_id variables
+
+### Home district vs Bank district
+```{r}
+home_diff_bank <- cda |> filter(district_idhome != district_idbank) |> nrow()
+```
+at first, those people were excluded because they have different district home and bank. 
+We observe that `r home_diff_bank`clients have a bank in another distric as the one they live in.
+
+```{r}
+cda |> group_by(account_id) |> distinct(district_idhome) |> 
+  summarise(N=n()) |> filter(N>1)
+```
+filter operates at a level of a single row but we want to compare many persons so many rows so we group_by over account id.
 
 
